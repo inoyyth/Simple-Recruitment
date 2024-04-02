@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('dokumen_pelamar', function (Blueprint $table) {
             $table->id('id_dokumen_pelamar');
-            $table->foreignId('id_pelamar');
+            $table->integer('id_pelamar');
             $table->string('name', 100);
             $table->string('type', 10);
             $table->float('size', 8, 2);

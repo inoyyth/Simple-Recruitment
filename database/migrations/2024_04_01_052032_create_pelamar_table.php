@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('no_ktp', 16);
             $table->string('nama_pelamar', 100);
             $table->date('tanggal_lahir');
-            $table->longText('alamat');
+            $table->text('alamat');
             $table->string('email', 100);
             $table->text('password');
             $table->string('no_hp', 15);
