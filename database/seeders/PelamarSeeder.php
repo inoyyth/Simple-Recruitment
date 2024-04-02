@@ -22,11 +22,11 @@ class PelamarSeeder extends Seeder
                     "no_ktp" => $data['0'],
                     "nama_pelamar" => $data['1'],
                     "tanggal_lahir" => $data['2']
-                ]);    
+                ]);
             }
             $firstline = false;
         }
-   
+
         fclose($csvFile);
     }
 }
