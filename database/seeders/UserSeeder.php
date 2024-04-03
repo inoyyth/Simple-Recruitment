@@ -26,8 +26,6 @@ class UserSeeder extends Seeder
                     "no_hp" => $data['4'],
                     "jenis_kelamin" => $data['5'],
                     "password" => bcrypt('password'),
-                    "updated_at" => null,
-                    "deleted_at" => null,
                 ]);
             }
             $firstline = false;

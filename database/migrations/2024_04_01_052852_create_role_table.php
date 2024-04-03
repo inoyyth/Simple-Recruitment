@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_role');
             $table->string('title', 255);
             $table->timestamps();
-            $table->timestamp('deleted_at')->nullable(true);
+            $table->softDeletes();
         });
     }
 

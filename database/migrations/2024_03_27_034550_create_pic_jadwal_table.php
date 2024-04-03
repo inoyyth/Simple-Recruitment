@@ -16,9 +16,8 @@ return new class extends Migration
             $table->integer('id_user');
             $table->integer('id_jadwal');
             $table->integer('id_role');
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->nullable(true);
-            $table->timestamp('deleted_at')->nullable(true);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
