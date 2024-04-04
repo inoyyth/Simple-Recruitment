@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('peserta', function (Blueprint $table) {
             $table->id('id_peserta');
-            $table->foreignId('id_pelamar');
-            $table->foreignId('id_jadwal');
+            $table->integer('id_pelamar');
+            $table->integer('id_jadwal');
             $table->string('gelombang');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->timestamp('deleted_at');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

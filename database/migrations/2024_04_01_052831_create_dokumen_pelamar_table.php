@@ -19,7 +19,7 @@ return new class extends Migration
             $table->float('size', 8, 2);
             $table->text('path');
             $table->timestamps();
-            $table->timestamp('deleted_at');
+            $table->softDeletes();
         });
     }
 

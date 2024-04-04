@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('email', 100);
             $table->text('password');
             $table->string('no_hp', 15);
-            $table->enum('jenis_kelamin', ['L','P']);
+            $table->enum('jenis_kelamin', ['L', 'P']);
             $table->text('foto');
             $table->timestamps();
-            $table->timestamp('deleted_ad');
+            $table->softDeletes();
         });
     }
 

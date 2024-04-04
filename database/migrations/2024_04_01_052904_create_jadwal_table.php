@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('lokasi');
             $table->text('ruang');
             $table->timestamps();
-            $table->timestamp('deleted_at');
+            $table->softDeletes();
         });
     }
 

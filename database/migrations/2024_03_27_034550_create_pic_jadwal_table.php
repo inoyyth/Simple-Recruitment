@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('pic_jadwal', function (Blueprint $table) {
             $table->id('id_pic_jadwal');
-            $table->foreignId('id_user');
-            $table->foreignId('id_jadwal');
-            $table->foreignId('id_role');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
-            $table->timestamp('deleted_at');
+            $table->integer('id_user');
+            $table->integer('id_jadwal');
+            $table->integer('id_role');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
