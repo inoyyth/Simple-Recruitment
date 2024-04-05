@@ -21,7 +21,13 @@ class PelamarSeeder extends Seeder
                 Pelamar::create([
                     "no_ktp" => $data['0'],
                     "nama_pelamar" => $data['1'],
-                    "tanggal_lahir" => $data['2']
+                    "tanggal_lahir" => $data['2'],
+                    "alamat" => $data['3'],
+                    "email" => $data['4'],
+                    "no_hp" => $data['5'],
+                    "jenis_kelamin" => $data['6'],
+                    "foto" => $data['7'],
+                    "password" => bcrypt('password')
                 ]);
             }
             $firstline = false;
