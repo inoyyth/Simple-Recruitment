@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PelamarController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\PesertaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,19 +18,23 @@ use App\Http\Controllers\PelamarController;
 |
 */
 
-Route::controller(UserController::class)->prefix('user')->group(function () {
-    Route::get('/', 'index');
-    Route::get('/detail-satu', 'detailSatu');
-    Route::get('/{id}', 'getDetail');
-    Route::post('/', 'create');
-    Route::put('/{id}', 'update');
-    Route::delete('/{id}', 'destroy');
-});
-
 Route::controller(PelamarController::class)->prefix('pelamar')->group(function () {
     Route::get('/', 'index');
     Route::get('/{id}', 'detail');
-    Route::post('/', 'add');
-    Route::put('/{id}', 'edit');
-    Route::delete('/{id}', 'delete');
+    Route::post('/', 'store');
+    Route::delete('/{id}', 'hapus');
+});
+
+Route::controller(PesertaController::class)->prefix('peserta')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'detail');
+    Route::post('/', 'store');
+    Route::delete('/{id}', 'hapus');
+});
+
+Route::controller(JadwalController::class)->prefix('jadwal')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'detail');
+    Route::post('/', 'store');
+    Route::delete('/{id}', 'hapus');
 });
