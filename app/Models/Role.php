@@ -11,4 +11,5 @@ class Role extends Model
 
     protected $table = 'role';
     protected $primarykey = 'id_role';
+    protected $fillable = ['title'];
 }
