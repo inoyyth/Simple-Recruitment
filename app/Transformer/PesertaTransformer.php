@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Transformer;
 
 use League\Fractal\TransformerAbstract;
@@ -13,6 +14,8 @@ class PesertaTransformer extends TransformerAbstract
             'id_pelamar' => $query->id_pelamar,
             'id_jadwal' => $query->id_jadwal,
             'gelombang' => $query->gelombang,
+            'nama_pelamar' => $query->pelamar->nama_pelamar,
+            'jadwal_pemanggilan' => isset($query->jadwal) ? $query->jadwal->tanggal_pemanggilan : "",
         ];
     }
 }
