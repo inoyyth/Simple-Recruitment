@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pelamar;
+use App\Models\PicJadwal;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,19 +11,19 @@ use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use App\Transformer\PelamarTransformer;
+use App\Transformer\PicJadwalTransformer;
 
-class PelamarController extends Controller
+class PicJadwalController extends Controller
 {
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
-        $query = Pelamar::select('*');
+        $query = PicJadwal::select('*');
         $query = $query->paginate($perPage);
         $datas = $query->getCollection();
 
         $fractal = new Manager();
-        $resource = new Collection($datas, new PelamarTransformer());
+        $resource = new Collection($datas, new PicJadwalTransformer());
         $resource->setPaginator(new IlluminatePaginatorAdapter($query));
         $res = $fractal->createData($resource)->toArray();
 
@@ -34,11 +34,11 @@ class PelamarController extends Controller
     {
         //find post by ID
         $id = $request->id;
-        $data = Pelamar::find($id);
+        $data = PicJadwal::find($id);
 
         if ($data) {
             $fractal = new Manager();
-            $resource = new Item($data, new PelamarTransformer());
+            $resource = new Item($data, new PicJadwalTransformer());
             $res = $fractal->createData($resource)->toArray();
 
             return response()->json($res, 200);
@@ -53,10 +53,14 @@ class PelamarController extends Controller
     {
         try {
             $data = $request->all(); // Serialize
-            $data['password'] = Hash::make($data['password']);
-            $model = new Pelamar;
-            $model = $model->fill($data);
-            $query = $model->save();
+            $model = new PicJadwal;
+            if ($request->id) {
+                $model = $model->find($request->id);
+                $query = $model->update($data);
+            } else {
+                $model->fill($data);
+                $query = $model->save();
+            }
             if ($query) {
                 echo json_encode(array('status' => true, 'pesan' => 'Data Berhasil Disimpan'));
             } else {
@@ -70,7 +74,7 @@ class PelamarController extends Controller
     public function hapus(Request $request)
     {
         $id = $request->id;
-        $deleted = Pelamar::find($id)->delete();
+        $deleted = PicJadwal::find($id)->delete();
         if($deleted)
         {
             return json_encode("Data Berhasil Di Hapus.!");

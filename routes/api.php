@@ -7,6 +7,7 @@ use App\Http\Controllers\PelamarController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PesertaController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PicJadwalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,5 +53,13 @@ Route::controller(JadwalController::class)->prefix('jadwal')->group(function () 
     Route::get('/', 'index');
     Route::get('/{id}', 'detail');
     Route::post('/', 'store');
+    Route::delete('/{id}', 'hapus');
+});
+
+Route::controller(PicJadwalController::class)->prefix('pic-jadwal')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'detail');
+    Route::post('/', 'store');
+    Route::put('/{id}', 'store');
     Route::delete('/{id}', 'hapus');
 });
