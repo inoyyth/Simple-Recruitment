@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Pelamar;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
@@ -43,7 +42,6 @@ class PelamarController extends Controller
 
             return response()->json($res, 200);
         } else {
-            
             return response()->json(['message' => 'Data tidak ditemukan'], 404);
         }
         
@@ -58,12 +56,12 @@ class PelamarController extends Controller
             $model = $model->fill($data);
             $query = $model->save();
             if ($query) {
-                echo json_encode(array('status' => true, 'pesan' => 'Data Berhasil Disimpan'));
+                return response()->json(["message" => "Data berhasil disimpan"], 200);
             } else {
-                echo json_encode(array('status' => false, 'pesan' => 'Gagal Simpan Data'));
+                return response()->json(["message" => "Data gagal disimpan"], 200);
             }
         } catch (Exception $e) {
-            echo json_encode(array('status' => false, 'pesan' => $e->getMessage()));
+            return response()->json(["message" => $e->getMessage()], 500);
         }
     }
 
@@ -71,13 +69,10 @@ class PelamarController extends Controller
     {
         $id = $request->id;
         $deleted = Pelamar::find($id)->delete();
-        if($deleted)
-        {
-            return json_encode("Data Berhasil Di Hapus.!");
-        }
-        else
-        {
-            return json_encode("Data Gagal Di Hapus.!");
+        if ($deleted) {
+            return response()->json(["message" => "Data berhasil dihapus"], 200);
+        } else {
+            return response()->json(["message" => "Data gagal dihapus"], 200);
         }
     }
 }

@@ -3,24 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peserta;
+use App\Transformer\PesertaTransformer;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class PesertaController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = Peserta::all();
-        return json_encode($query);
+    public function index(Request $request){
+        $perPage = $request->get('per_page', 10);
+        $query = Peserta::select('*');
+        $query = $query->paginate($perPage);
+        $datas = $query->getCollection();
+
+        $fractal = new Manager();
+        $resource = new Collection($datas, new PesertaTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($query));
+        $res = $fractal->createData($resource)->toArray();
+
+        return response()->json($res, 200);
     }
 
     public function detail(Request $request)
     {
         //find post by ID
         $id = $request->id;
-        $query = Peserta::find($id)->first();
-        return json_encode($query);
+        $data = Peserta::find($id);
+        if ($data) {
+            $fractal = new Manager();
+            $resource = new Item($data, new PesertaTransformer());
+            $res = $fractal->createData($resource)->toArray();
+
+            return response()->json($res, 200);
+        } else {
+            return response()->json(['message' => "Data tidak ditemukan"], 404);
+        }
     }
 
     public function store(Request $request)
@@ -31,12 +51,12 @@ class PesertaController extends Controller
             $model = $model->fill($data);
             $query = $model->save();
             if ($query) {
-                echo json_encode(array('status' => true, 'pesan' => 'Data Berhasil Disimpan'));
+                return response()->json(["message" => "Data berhasil disimpan"], 200);
             } else {
-                echo json_encode(array('status' => false, 'pesan' => 'Gagal Simpan Data'));
+                return response()->json(["message" => "Data gagal disimpan"], 200);
             }
         } catch (Exception $e) {
-            echo json_encode(array('status' => false, 'pesan' => $e->getMessage()));
+            return response()->json(["message" => $e->getMessage()], 500);
         }
     }
 
@@ -45,9 +65,9 @@ class PesertaController extends Controller
         $id = $request->id;
         $deleted = Peserta::find($id)->delete();
         if ($deleted) {
-            return json_encode("Data Berhasil Di Hapus.!");
+            return response()->json(["message" => "Data berhasil dihapus"], 200);
         } else {
-            return json_encode("Data Gagal Di Hapus.!");
+            return response()->json(["message" => "Data gagal dihapus"], 200);
         }
     }
 }
