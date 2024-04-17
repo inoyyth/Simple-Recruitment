@@ -10,7 +10,6 @@ class JadwalTransformer extends TransformerAbstract
     {
         return [
             'id_jadwal' => $query->id_jadwal,
-            'id_pelamar' => $query->id_pelamar,
             'tanggal_pemanggilan' => $query->tanggal_pemanggilan,
             'waktu_pemanggilan' => $query->waktu_pemanggilan,
             'lokasi' => $query->lokasi,
