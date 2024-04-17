@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         // $query = User::all();
         $query = User::select('*')->get();
@@ -48,32 +48,23 @@ class UserController extends Controller
     public function update(Request $request)
     {
 
-        try {
-            $data = $request->all();
-            $model = new User;
-            $model = $model->find($request->id);
-            if ($model) {
-                $model = $model->fill($data);
-                $query = $model->save();
-                if ($query) {
-                    echo json_encode(array('status' => true, 'pesan' => 'Data Berhasil Dirubah'));
-                } else {
-                    echo json_encode(array('status' => true, 'pesan' => 'Data Gagal Dirubah'));
-                }
-            } else {
-                echo json_encode(array('status' => false, 'pesan' => 'Data Tidak Ditemukan'));
-            }
-        } catch (Exception $e) {
-            echo json_encode(array('status' => false, 'pesan' => $e->getMessage()));
+        $id = $request->id;
+        $data = $request->all();
+        $query = DB::table('user')->where('id_user', $id)->update($data);
+        if ($query) {
+            echo json_encode(array('status' => true, 'pesan' => 'Data Berhasil Dirubah'));
+        } else {
+            echo json_encode(array('status' => false, 'pesan' => 'Data Gagal Dirubah'));
         }
     }
 
     public function destroy(Request $request)
     {
-        $id = $request->id;
-        $deleted = DB::table('users')
-            ->where('id_user', $id)
-            ->delete();
+        $user = User::select('*')
+            ->where('id_user', $request->id);
+
+        $deleted = $user->delete();
+
         if ($deleted) {
             return json_encode(array('status' => true, 'pesan' => 'Data Berhasil Dihapus'));
         } else {
