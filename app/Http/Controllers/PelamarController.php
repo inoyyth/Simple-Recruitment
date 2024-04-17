@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Pelamar;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class PelamarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pelamar::select('*')->get();
+        $query = Pelamar::all();
         return json_encode($query);
     }
 
@@ -20,10 +20,7 @@ class PelamarController extends Controller
     {
         //find post by ID
         $id = $request->id;
-        // var_dump($id);die();
-        $query = DB::table('pelamar')
-                    ->where('id_pelamar', $id)
-                    ->first();
+        $query = Pelamar::find($id)->first();
         return json_encode($query);
     }
 
@@ -31,7 +28,7 @@ class PelamarController extends Controller
     {
         try {
             $data = $request->all(); // Serialize
-            $data['password'] = Crypt::encryptString($data['password']);
+            $data['password'] = Hash::make($data['password']);
             $model = new Pelamar;
             $model = $model->fill($data);
             $query = $model->save();
@@ -48,7 +45,7 @@ class PelamarController extends Controller
     public function hapus(Request $request)
     {
         $id = $request->id;
-        $deleted = DB::table('pelamar')->where('id_pelamar', $id)->delete();
+        $deleted = Pelamar::find($id)->delete();
         if($deleted)
         {
             return json_encode("Data Berhasil Di Hapus.!");

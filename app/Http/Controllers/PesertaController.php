@@ -11,7 +11,7 @@ class PesertaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Peserta::select('*')->get();
+        $query = Peserta::all();
         return json_encode($query);
     }
 
@@ -19,10 +19,7 @@ class PesertaController extends Controller
     {
         //find post by ID
         $id = $request->id;
-        // var_dump($id);die();
-        $query = DB::table('peserta')
-            ->where('id_peserta', $id)
-            ->first();
+        $query = Peserta::find($id)->first();
         return json_encode($query);
     }
 
@@ -46,7 +43,7 @@ class PesertaController extends Controller
     public function hapus(Request $request)
     {
         $id = $request->id;
-        $deleted = DB::table('peserta')->where('id_peserta', $id)->delete();
+        $deleted = Peserta::find($id)->delete();
         if ($deleted) {
             return json_encode("Data Berhasil Di Hapus.!");
         } else {

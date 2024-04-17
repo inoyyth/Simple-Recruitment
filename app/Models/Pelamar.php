@@ -4,12 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Pelamar extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+    
     protected $table = 'pelamar';
-    protected $primarykey = 'id_pelamar';
+    protected $primaryKey = 'id_pelamar';
 
     protected $fillable = [
         'no_ktp',
