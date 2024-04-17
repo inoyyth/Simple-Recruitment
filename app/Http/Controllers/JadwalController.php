@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class JadwalController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $query = Jadwal::select('*')->get();
+        $query = Jadwal::all();
         return json_encode($query);
     }
 
@@ -19,9 +19,7 @@ class JadwalController extends Controller
     {
         //find post by ID
         $id = $request->id;
-        $query = DB::table('jadwal')
-                    ->whereDate('tanggal_pemanggilan', $id)
-                    ->get();
+        $query = Jadwal::find($id)->first();
         return json_encode($query);
     }
 
@@ -45,7 +43,7 @@ class JadwalController extends Controller
     public function hapus(Request $request)
     {
         $id = $request->id;
-        $deleted = DB::table('jadwal')->whereDate('tanggal_pemanggilan', $id)->delete();
+        $deleted = Jadwal::find($id)->delete();
         if($deleted)
         {
             return json_encode("Data Berhasil Di Hapus.!");
