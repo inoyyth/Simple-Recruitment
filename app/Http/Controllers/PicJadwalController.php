@@ -56,7 +56,11 @@ class PicJadwalController extends Controller
             $model = new PicJadwal;
             if ($request->id) {
                 $model = $model->find($request->id);
-                $query = $model->update($data);
+                if ($model) {
+                    $query = $model->update($data);
+                } else {
+                    return response()->json(['message' => 'Data tidak ditemukan'], 404);
+                }
             } else {
                 $model->fill($data);
                 $query = $model->save();
