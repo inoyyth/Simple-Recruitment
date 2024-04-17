@@ -3,27 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Transformer\UserTransformer;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use League\Fractal\Manager;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // $query = User::all();
-        $query = User::select('*')->get();
-        return json_encode($query);
+        $perPage = $request->get('per_page', 10);
+        $query = User::select('*');
+        $query = $query->paginate($perPage);
+        $datas = $query->getCollection();
+
+        $fractal = new Manager;
+        $resource = new Collection($datas, new UserTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($query));
+        $res = $fractal->createData($resource)->toArray();
+
+        return response()->json($res, 200);
     }
 
     public function getDetail(Request $request)
     {
-        $query = User::select('*')
-            ->where('id_user', $request->id)
-            ->first();
+        $data = User::find($request->id);
 
-        return json_encode($query);
+        if ($data) {
+            $fractal = new Manager;
+            $resource = new Item($data, new UserTransformer());
+            $res = $fractal->createData($resource)->toArray();
+
+            return response()->json($res, 200);
+        } else {
+            return response()->json(['pesan' => 'Data Tidak Ditemukan'], 404);
+        }
     }
 
     public function create(Request $request)
