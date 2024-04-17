@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Role;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class RoleController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         // $query = Role::all();
         $query = Role::select('*')->get();
@@ -44,10 +43,10 @@ class RoleController extends Controller
 
     public function hapus(Request $request)
     {
-        $id = $request->id;
-        $deleted = DB::table('role')
-            ->where('id_role', $id)
-            ->delete();
+        $role = Role::select('*')
+            ->where('id_role', $request->id);
+
+        $deleted = $role->delete();
 
         if ($deleted) {
             echo json_encode(array('status' => true, 'pesan' => 'Data Berhasil Dihapus'));
