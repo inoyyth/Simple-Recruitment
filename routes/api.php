@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PelamarController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\PesertaController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,21 @@ Route::controller(PelamarController::class)->prefix('pelamar')->group(function (
     Route::get('/', 'index');
     Route::get('/{id}', 'detail');
     Route::post('/', 'store');
+    Route::delete('/{id}', 'hapus');
+});
+
+Route::controller(UserController::class)->prefix('user')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'getDetail');
+    Route::post('/', 'create');
+    Route::put('/{id}', 'update');
+    Route::delete('/{id}', 'destroy');
+});
+
+Route::controller(RoleController::class)->prefix('role')->group(function () {
+    Route::get('/', 'index');
+    Route::get('/{id}', 'detail');
+    Route::post('/', 'create');
     Route::delete('/{id}', 'hapus');
 });
 
