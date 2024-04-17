@@ -13,9 +13,10 @@ use League\Fractal\Resource\Item;
 
 class PesertaController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $perPage = $request->get('per_page', 10);
-        $query = Peserta::select('*');
+        $query = Peserta::select('*')->has('pelamar');
         $query = $query->paginate($perPage);
         $datas = $query->getCollection();
 
