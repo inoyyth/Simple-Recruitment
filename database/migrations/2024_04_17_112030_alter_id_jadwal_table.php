@@ -12,9 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('jadwal', function (Blueprint $table) {
-            Schema::table('jadwal', function (Blueprint $table) {
-                $table->increments('id_jadwal')->first();
-            });
+            $table->increments('id_jadwal')->first();
         });
     }
 

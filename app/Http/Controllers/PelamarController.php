@@ -7,21 +7,47 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use League\Fractal;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use App\Transformer\PelamarTransformer;
 
 class PelamarController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Pelamar::all();
-        return json_encode($query);
+        $perPage = $request->get('per_page', 10);
+        $query = Pelamar::select('*');
+        $query = $query->paginate($perPage);
+        $datas = $query->getCollection();
+
+        $fractal = new Manager();
+        $resource = new Collection($datas, new PelamarTransformer());
+        $resource->setPaginator(new IlluminatePaginatorAdapter($query));
+        $res = $fractal->createData($resource)->toArray();
+
+        return response()->json($res, 200);
     }
 
     public function detail(Request $request)
     {
         //find post by ID
         $id = $request->id;
-        $query = Pelamar::find($id)->first();
-        return json_encode($query);
+        $data = Pelamar::find($id);
+
+        if ($data) {
+            $fractal = new Manager();
+            $resource = new Item($data, new PelamarTransformer());
+            $res = $fractal->createData($resource)->toArray();
+
+            return response()->json($res, 200);
+        } else {
+            
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
+        }
+        
     }
 
     public function store(Request $request)
