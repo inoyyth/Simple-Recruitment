@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Jadwal extends Model
@@ -15,10 +16,10 @@ class Jadwal extends Model
     protected $primaryKey = 'id_jadwal';
 
     protected $fillable = [
-        'id_pelamar',
         'tanggal_pemanggilan',
         'waktu_pemanggilan',
         'lokasi',
         'ruang',
     ];
+
 }
