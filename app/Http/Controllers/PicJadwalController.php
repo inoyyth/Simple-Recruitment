@@ -18,7 +18,7 @@ class PicJadwalController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
-        $query = PicJadwal::select('*');
+        $query = PicJadwal::select('*')->has('user')->has('role');
         $query = $query->paginate($perPage);
         $datas = $query->getCollection();
 
