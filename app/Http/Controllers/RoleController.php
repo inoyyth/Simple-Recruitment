@@ -13,8 +13,9 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use App\Exports\RoleExport;
+use App\Exports\RoleExport2;
 use Maatwebsite\Excel\Facades\Excel;
-// use PDF;
+use PDF;
 
 class RoleController extends Controller
 {
@@ -94,7 +95,7 @@ class RoleController extends Controller
         }
     }
 
-    public function export(Request $request)
+    public function exportOld(Request $request)
     {
         $role = Role::all();
         $peserta = Peserta::all();
@@ -109,19 +110,40 @@ class RoleController extends Controller
         return Excel::download(new RoleExport($data), 'role.xlsx');
     }
 
-    // public function pdf(Request $request)
-    // {
-    //     $data = [
-    //         'name' => 'Jhon Wik Wik',
-    //         'email' => 'jhon.wik@gmail.com'
-    //     ];
+    public function export(Request $request)
+    {
+        $data = Role::all();
 
-    //     // dd(public_path() . 'images/slide2.jpg');
+        return Excel::download(new RoleExport2($data), 'role.xlsx');
+    }
+
+    public function pdf(Request $request)
+    {
+        $arrContextOptions=array(
+            "ssl"=>array(
+                "verify_peer"=>false,
+                "verify_peer_name"=>false,
+            ),
+        );  
+        $url = 'https://www.humanindo.co.id/assets/images/others/slide2.jpg';
+        $image = file_get_contents($url, false, stream_context_create($arrContextOptions));
+        // if ($image !== false){
+        //     return 'data:image/jpg;base64,'.base64_encode($image);
+
+        // }
+      
+        $data = [
+            'name' => 'Jhon Wik Wik',
+            'email' => 'jhon.wik@gmail.com',
+            'image' => 'data:image/jpg;base64,'.base64_encode($image)
+        ];
+
+        // dd(public_path() . 'images/slide2.jpg');
         
-    //     $pdf = PDF::loadView('pdf.role', $data);
-    //     return $pdf->download('role.pdf');
+        $pdf = PDF::loadView('pdf.role', $data);
+        return $pdf->download('role.pdf');
 
-    //     // $pdf = PDF::loadView('pdf.role', $data);
-	//     // return $pdf->stream('document.pdf');
-    // }
+        // $pdf = PDF::loadView('pdf.role', $data);
+	    // return $pdf->stream('document.pdf');
+    }
 }

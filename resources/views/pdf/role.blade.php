@@ -10,31 +10,21 @@
 		table tr th{
 			font-size: 9pt;
 		}
+		.page-break {
+			page-break-after: always;
+		}
 	</style>
-	<htmlpageheader name="page-header">
-	Your Header Content
-	</htmlpageheader>
-	<center>
-     <h5>Membuat Laporan PDF Dengan DOMPDF Laravel</h4>
-	</center>
-    {{ $name }}
-    
-    <img src="<?php echo public_path() . '/images/slide2.jpg';?>" />
-    
-	<table class='table table-bordered'>
-		<thead>
-			<tr>
-				<th>No</th>
-				<th>Nama</th>
-				<th>Email</th>
-				<th>Alamat</th>
-				<th>Telepon</th>
-				<th>Pekerjaan</th>
-			</tr>
-		</thead>
-	</table>
-	<htmlpagefooter name="page-footer">
-	Your Footer Content
-</htmlpagefooter>
+	
+		<div style="position: relative;height:100vh;">
+			<h1>Page 1</h1>
+			<img src="{{ $image }}" />
+			<img src="{{ $image }}" />
+			<div style="position: absolute;bottom: 0;text-align: center;">footer</div>
+		</div>
+		<div class="page-break"></div>
+		<div style="position: relative;height:100vh;">
+			<h1>Page 2</h1>
+			<div style="position: absolute;bottom: 0;text-align: center;">footer</div>
+		</div>
 </body>
 </html>
