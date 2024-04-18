@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
+use App\Models\Peserta;
+use App\Models\User;
 use App\Transformer\RoleTransformer;
 use Exception;
 use Illuminate\Http\Request;
@@ -10,9 +12,18 @@ use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use App\Exports\RoleExport;
+use Maatwebsite\Excel\Facades\Excel;
+// use PDF;
 
 class RoleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('api', ['except' => ['export']]);
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
@@ -82,4 +93,35 @@ class RoleController extends Controller
             echo json_encode(array('status' => true, 'pesan' => 'Data Gagal Dihapus'));
         }
     }
+
+    public function export(Request $request)
+    {
+        $role = Role::all();
+        $peserta = Peserta::all();
+        $user = User::all();
+
+        $data = [
+            ['title' => 'Role', 'data' => $role], 
+            ['title' => 'Peserta', 'data' => $peserta], 
+            ['title' => 'User', 'data' => $user], 
+        ];
+
+        return Excel::download(new RoleExport($data), 'role.xlsx');
+    }
+
+    // public function pdf(Request $request)
+    // {
+    //     $data = [
+    //         'name' => 'Jhon Wik Wik',
+    //         'email' => 'jhon.wik@gmail.com'
+    //     ];
+
+    //     // dd(public_path() . 'images/slide2.jpg');
+        
+    //     $pdf = PDF::loadView('pdf.role', $data);
+    //     return $pdf->download('role.pdf');
+
+    //     // $pdf = PDF::loadView('pdf.role', $data);
+	//     // return $pdf->stream('document.pdf');
+    // }
 }

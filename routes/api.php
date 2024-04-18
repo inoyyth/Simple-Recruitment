@@ -74,3 +74,6 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
 });
+
+Route::get('/export/role', [RoleController::class, 'export']);
+Route::get('/pdf/role', [RoleController::class, 'pdf']);
