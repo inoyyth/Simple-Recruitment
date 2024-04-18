@@ -19,12 +19,6 @@
           <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
             aria-expanded="false">
             <div style="margin-right:5px;font-size:14px;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">
-            @if (auth()->guard('surveyor')->check())
-            {{ auth()->user()->nama }}
-            @endif
-            @if (auth()->guard('web')->check())
-            {{ auth()->user()->name }}
-            @endif
 </div>
             <img src="{{
         URL::asset('themes/assets/images/profile/user-1.jpg') }}" alt="" width="35" height="35" class="rounded-circle">
@@ -43,10 +37,10 @@
                 <i class="ti ti-list-check fs-6"></i>
                 <p class="mb-0 fs-3">My Task</p>
               </a> -->
-              <a href="{{ route('logout') }}" class="btn btn-outline-primary mx-3 mt-2 d-block"
+              <a href="" class="btn btn-outline-primary mx-3 mt-2 d-block"
                 onclick="event.preventDefault();
                 document.getElementById('logout-form').submit();">Logout</a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                <form id="logout-form" action="" method="POST">
                   @csrf
                 </form>
             </div>

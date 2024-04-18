@@ -27,4 +27,11 @@ Route::controller(LoginController::class)
 ->name('auth.')
 ->group(function() {
     Route::post('/verified', 'verified')->name('verified');
+    Route::get('/role', 'role')->name('role');
+});
+
+
+
+Route::get('/role', function () {
+    return view('page.role');
 });
