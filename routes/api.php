@@ -76,4 +76,6 @@ Route::group([
 });
 
 Route::get('/export/role', [RoleController::class, 'export']);
+Route::get('/export/pelamar', [PelamarController::class, 'export']);
+Route::get('/export/peserta', [PesertaController::class, 'export']);
 Route::get('/pdf/role', [RoleController::class, 'pdf']);

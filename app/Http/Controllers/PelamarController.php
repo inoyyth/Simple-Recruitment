@@ -11,9 +11,16 @@ use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use App\Transformer\PelamarTransformer;
+use App\Exports\PelamarExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PelamarController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('api', ['except' => ['export']]);
+    }
+
     public function index(Request $request)
     {
         $perPage = $request->get('per_page', 10);
@@ -74,5 +81,16 @@ class PelamarController extends Controller
         } else {
             return response()->json(["message" => "Data gagal dihapus"], 200);
         }
+    }
+
+    public function export(Request $request)
+    {
+        $data = Pelamar::select('*')
+                        ->whereNull('deleted_at')
+                        ->orWhereDate('deleted_at', '>=', "2024-04-17")
+                        ->withTrashed()
+                        ->get();
+
+        return Excel::download(new PelamarExport($data), 'pelamar.xlsx');
     }
 }
