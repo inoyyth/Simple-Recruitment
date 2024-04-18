@@ -19,6 +19,10 @@
 			<h1>Page 1</h1>
 			<img src="{{ $image }}" />
 			<img src="{{ $image }}" />
+			<img src="{{ $image }}" />
+			<img src="{{ $image }}" />
+			<img src="{{ $image }}" />
+			<img src="{{ $image }}" />
 			<div style="position: absolute;bottom: 0;text-align: center;">footer</div>
 		</div>
 		<div class="page-break"></div>
@@ -26,5 +30,14 @@
 			<h1>Page 2</h1>
 			<div style="position: absolute;bottom: 0;text-align: center;">footer</div>
 		</div>
+		<script type="text/php">
+			<?php
+			if ( isset($pdf) ) {
+				dd('croot');
+				$font = Font_Metrics::get_font("helvetica", "bold");
+				$pdf->page_text(72, 18, "Header: {PAGE_NUM} of {PAGE_COUNT}", $font, 6, array(0,0,0));
+			}
+			?>
+		</script> 
 </body>
 </html>

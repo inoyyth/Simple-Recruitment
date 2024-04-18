@@ -138,12 +138,29 @@ class RoleController extends Controller
             'image' => 'data:image/jpg;base64,'.base64_encode($image)
         ];
 
-        // dd(public_path() . 'images/slide2.jpg');
+        $pdf = app('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        // $data = ['title' => 'Testing Page Number In Body'];
+        $pdf->loadView('pdf.role', $data);
         
-        $pdf = PDF::loadView('pdf.role', $data);
+        $pdf->render();
+        $canvas = $pdf->getDomPDF()->getCanvas();
+        $canvas->page_script(function ($pageNumber, $pageCount, $canvas, $fontMetrics) {
+            // Text to display
+            $text = "$pageNumber/$pageCount";
+            // Margins from the bottom right
+            $marginRight = 100;
+            $marginBottom = 15;
+            // Font and font size
+            $fontSize = 12;
+            $font = $fontMetrics->getFont('Helvetica');
+            // Set position
+            $textWidth = $fontMetrics->getTextWidth($text, $font, $fontSize);
+            $xPosition = $canvas->get_width() - $textWidth - $marginRight;
+            $yPosition = $canvas->get_height() - $marginBottom;
+            // Draw text
+            $canvas->text($xPosition, $yPosition, "FOOTER - " . $text, $font, $fontSize);
+        });
         return $pdf->download('role.pdf');
-
-        // $pdf = PDF::loadView('pdf.role', $data);
-	    // return $pdf->stream('document.pdf');
     }
 }
