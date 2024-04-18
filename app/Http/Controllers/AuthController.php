@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,7 @@ class AuthController extends Controller
     public function __construct()
     {
         # By default we are using here auth:api middleware
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['validation']]);
     }
 
     /**
@@ -26,6 +27,8 @@ class AuthController extends Controller
     public function validation()
     {
         $credentials = request(['email', 'password']);
+
+        Log::debug($credentials);
 
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);

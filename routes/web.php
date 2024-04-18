@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Web\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/login', function () {
+    return view('auth.login');
+});
+
+Route::controller(LoginController::class)
+->prefix('auth')
+->name('auth.')
+->group(function() {
+    Route::post('/verified', 'verified')->name('verified');
 });
