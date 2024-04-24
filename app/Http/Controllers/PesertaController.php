@@ -10,6 +10,8 @@ use League\Fractal\Manager;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use Mail;
+use App\Mail\TestMail;
 
 class PesertaController extends Controller
 {
@@ -24,6 +26,13 @@ class PesertaController extends Controller
         $resource = new Collection($datas, new PesertaTransformer());
         $resource->setPaginator(new IlluminatePaginatorAdapter($query));
         $res = $fractal->createData($resource)->toArray();
+
+        $mailData = [
+            'title' => 'Mail from Simple Recruitment',
+            'body' => 'This is for testing email using smtp.'
+        ];
+         
+        Mail::to('supri170845@gmail.com')->send(new TestMail($mailData));
 
         return response()->json($res, 200);
     }
